@@ -1,0 +1,67 @@
+---
+title: "Texto"
+date: "2023-07-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(datos)
+library(dplyr)
+```
+
+
+En los siguientes gráficos, agregá título, etiquetas de los ejes y texto alternativo: 
+
+```{r}
+#' fig.alt: ____
+ggplot(pinguinos, aes(especie)) +
+  geom_bar() +
+  labs(title = ____,
+       x = ____
+       y = ____)
+```
+
+
+```{r}
+ggplot(pinguinos, aes(isla)) +
+  geom_bar(aes(fill = sexo), position = "dodge")
+```
+
+
+Nota: Se puede anotar los valores sobre las barras usando `geom_text()` y `stat = "count"`, pero hay que retocar `position` y `vjust` (ajuste vertical). 
+
+```{r}
+ggplot(pinguinos, aes(isla)) +
+  geom_bar(aes(fill = sexo), position = "dodge") +
+  geom_text(aes(group = sexo, label = after_stat(count)),
+            stat = "count",
+            position = position_dodge(.9), vjust = -0.1,
+            color = "black")
+```
+
+
+```{r}
+ggplot(pinguinos, aes(largo_pico_mm, alto_pico_mm)) +
+  geom_point(aes(color = especie)) +
+  geom_smooth(aes(color = especie), method = "lm")
+```
+ 
+
+En el siguiente gráfico, hay cuatro países que parecieran ser "outliers" ya que tienen una esperanza de vida mucho menor de lo esperado por su PBI per cápita (son países con `pib_per_capita` mayor a 9000 pero `esperanza_de_vida` menor a 60.)
+En estos casos, puede ser útil destacarlos y anotar con texto cuáles son. 
+Descomentá la línea `ggforce::geom_mark_circle(...` y completá el filtro para mostrar los paises.
+No te olvides de también nombrar los ejes y escribir el texto alternativo!
+ 
+```{r}
+paises |> 
+  filter(anio == max(anio)) |> 
+  ggplot(aes(pib_per_capita, esperanza_de_vida)) +
+  geom_point() +
+  # ggforce::geom_mark_circle(aes(filter = ____, label = pais, group = pais)) +
+  NULL
+  
+  
+```
+
